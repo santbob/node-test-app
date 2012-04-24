@@ -8,7 +8,8 @@ function message(obj){
 
 function send(){
   var val = document.getElementById('text').value;
-  socket.send(val);
+  socket.emit('message',val);
+  //socket.send(val);
   message({ message: ['you', val] });
   document.getElementById('text').value = '';
 }
@@ -17,8 +18,7 @@ function esc(msg){
   return String(msg).replace(/</g, '&lt;').replace(/>/g, '&gt;');
 };
 
-var socket = new io.Socket(null, {port: 8080, rememberTransport: false});
-socket.connect();
+var socket = io.connect();
 socket.on('message', function(obj){
   if ('buffer' in obj){
     document.getElementById('form').style.display='block';
